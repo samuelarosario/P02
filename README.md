@@ -51,3 +51,8 @@ src/
    - Do not leave temporary files in the project directory
 
 3. **Session Guidelines**: These instructions should be loaded and followed each time I connect or start a new session with the agent.
+
+4. **Data Guidelines**: 
+   - **No Mock Data Creation**: Do not create, generate, or use mock/fake data in this project
+   - Work only with real API endpoints and actual data sources
+   - All data should come from legitimate external APIs
