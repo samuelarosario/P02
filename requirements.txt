@@ -1,0 +1,26 @@
+# Core libraries for API data pulling
+requests>=2.31.0
+pandas>=2.0.0
+python-dotenv>=1.0.0
+
+# Additional HTTP and async libraries
+httpx>=0.25.0
+aiohttp>=3.8.0
+
+# Data processing and utilities
+numpy>=1.24.0
+openpyxl>=3.1.0
+xlsxwriter>=3.1.0
+
+# JSON and XML processing
+xmltodict>=0.13.0
+
+# API authentication and security
+cryptography>=41.0.0
+
+# Logging and debugging
+loguru>=0.7.0
+
+# Testing (optional)
+pytest>=7.4.0
+requests-mock>=1.11.0
