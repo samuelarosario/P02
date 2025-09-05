@@ -8,9 +8,10 @@
 
 # Required Parameters
 api_key=
-iataCode=MNL,HND
+iataCode=PROMPT_USER
 type=departure
-date=2025-09-14
+date=2025-09-19
+date_range=7
 
 # API Key (Required)
 # Get your API key from Aviation Edge dashboard
@@ -144,7 +145,7 @@ compress_output=false
 
 # PRESET: Berlin Departures Next Week
 [berlin_departures_weekly]
-iataCode=BER
+iataCode=PROMPT_USER
 type=departure
 days_ahead=7
 airline_iata=
@@ -152,18 +153,18 @@ flight_num=
 
 # PRESET: JFK Arrivals Today
 [jfk_arrivals_today]
-iataCode=JFK
+iataCode=PROMPT_USER
 type=arrival
-date=auto_today
+date=2025-09-19
 airline_iata=
 flight_num=
 
 # PRESET: Lufthansa Flights from Frankfurt
 [lufthansa_fra_departures]
-iataCode=FRA
+iataCode=PROMPT_USER
 type=departure
 airline_iata=LH
-date=auto_tomorrow
+date=2025-09-19
 
 # ========================================
 # NOTES FOR AVIATION EDGE API

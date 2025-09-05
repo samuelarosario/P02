@@ -301,7 +301,18 @@ def main():
                 if line.startswith('iataCode=') and not line.startswith('#'):
                     if not airports:  # Only take the first valid entry
                         airports_str = line.split('=')[1]
-                        airports = [code.strip() for code in airports_str.split(',') if code.strip()]
+                        if airports_str.strip() == 'PROMPT_USER':
+                            # Prompt user for airport input
+                            print("🛫 Airport Selection Required")
+                            user_airport = input("Enter airport IATA code for DEPARTURE data collection (e.g., MNL, POM, HND): ").strip().upper()
+                            if user_airport:
+                                airports = [user_airport]
+                                print(f"✅ Selected airport: {user_airport}")
+                            else:
+                                print("❌ No airport provided, exiting")
+                                return
+                        else:
+                            airports = [code.strip() for code in airports_str.split(',') if code.strip()]
                 elif line.startswith('date=') and not line.startswith('#'):
                     if not target_date:  # Only take the first valid entry
                         target_date = line.split('=')[1].strip()
@@ -371,5 +382,95 @@ def main():
     
     print("\n✅ Departure collection completed!")
 
+def weekly_collection():
+    """
+    Weekly collection wrapper that updates param file for 7 consecutive days
+    and runs main() for each day starting from current date + 8 days
+    Prompts for airport selection once and uses it for all 7 days
+    """
+    from datetime import datetime, timedelta
+    
+    print("Weekly Departure Future Schedules Collection")
+    print("Collecting 7 consecutive days starting from current date + 8 days")
+    print()
+    
+    # Calculate start date (current + 8 days for 8-day rule compliance)
+    start_date = datetime.now() + timedelta(days=8)
+    param_file = os.path.join(os.path.dirname(__file__), 'Departure-Future-Schedules-Param.txt')
+    
+    # Get airport selection once for the entire week
+    print("Airport Selection for Weekly Collection:")
+    selected_airport = input("Enter airport IATA code for DEPARTURE data collection (e.g., MNL, POM, HND): ").strip().upper()
+    print(f"Selected: {selected_airport}")
+    print()
+    
+    total_days_processed = 0
+    
+    for day_offset in range(7):  # 7 days
+        current_date = start_date + timedelta(days=day_offset)
+        date_str = current_date.strftime('%Y-%m-%d')
+        
+        print(f"Day {day_offset + 1}/7: {date_str}")
+        
+        # Update parameter file with current date and selected airport
+        try:
+            # Read current param file
+            with open(param_file, 'r') as f:
+                lines = f.readlines()
+            
+            # Update both date and iataCode lines
+            updated_lines = []
+            for line in lines:
+                if line.strip().startswith('date=') and not line.strip().startswith('#'):
+                    updated_lines.append(f'date={date_str}\n')
+                elif line.strip().startswith('iataCode=') and not line.strip().startswith('#'):
+                    updated_lines.append(f'iataCode={selected_airport}\n')
+                else:
+                    updated_lines.append(line)
+            
+            # Write updated param file
+            with open(param_file, 'w') as f:
+                f.writelines(updated_lines)
+            
+            print(f"   Updated parameter file: date={date_str}, airport={selected_airport}")
+            
+            # Run main collection for this date
+            print(f"   Running departure collection for {date_str}")
+            main()
+            
+            total_days_processed += 1
+            print(f"   Completed day {day_offset + 1}")
+            print()
+            
+            # Small delay between days
+            time.sleep(2)
+            
+        except Exception as e:
+            print(f"   Error processing {date_str}: {e}")
+            continue
+    
+    # Restore PROMPT_USER to parameter file after weekly collection
+    try:
+        with open(param_file, 'r') as f:
+            lines = f.readlines()
+        
+        updated_lines = []
+        for line in lines:
+            if line.strip().startswith('iataCode=') and not line.strip().startswith('#'):
+                updated_lines.append(f'iataCode=PROMPT_USER\n')
+            else:
+                updated_lines.append(line)
+        
+        with open(param_file, 'w') as f:
+            f.writelines(updated_lines)
+        
+        print("Parameter file restored to PROMPT_USER for future use")
+    except Exception as e:
+        print(f"Warning: Could not restore PROMPT_USER to parameter file: {e}")
+    
+    print(f"Weekly collection completed!")
+    print(f"Processed {total_days_processed}/7 days")
+    print(f"Date range: {start_date.strftime('%Y-%m-%d')} to {(start_date + timedelta(days=6)).strftime('%Y-%m-%d')}")
+
 if __name__ == "__main__":
-    main()
+    weekly_collection()

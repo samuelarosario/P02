@@ -35,6 +35,15 @@
 - **Date Validation Required**: Always validate requested date is minimum 8 days from today before any API call
 - **Permanent Restriction**: This 8-day rule applies exclusively to Future Schedules API and must be enforced in every session
 
+### Data Search Protocol
+- **DEFAULT METHOD**: ALL data searches must use Flight-Search.py (the Flight Search API) unless explicitly overridden
+- **Flight Search API**: Use `python Flight-Search.py` with appropriate parameters for all flight data queries
+- **Query DB Override**: Only use direct SQL database queries when user specifically requests "query DB"
+- **Query API Override**: Only use Aviation Edge API endpoints when user specifically requests "query API"
+- **Database Flight Column**: When querying database directly, ALWAYS use `flight_iata_number` column for flight number searches by default
+- **Search Method Verification**: Always confirm which search method to use before executing data queries
+- **Permanent Implementation**: This search protocol must be enforced in EVERY session and interaction
+
 ### API Call Execution Protocol
 - **CRITICAL**: ALL API calls must be counted and reported before execution
 - **Mandatory Confirmation**: Every API call requires explicit user confirmation before execution

@@ -9,9 +9,10 @@
 
 # Required Parameters
 api_key=
-iataCode=MNL,HND
+iataCode=PROMPT_USER
 type=arrival
-date=2025-09-14
+date=2025-09-19
+date_range=7
 
 # API Key (Required)
 # Get your API key from Aviation Edge dashboard

@@ -135,8 +135,9 @@ class AviationEdgeDB:
         aircraft = flight.get('aircraft', {})
         flight_info = flight.get('flight', {})
         
-        # Extract weekday directly from API response
-        weekdays = str(flight.get('weekday', ''))
+        # Extract weekday - use corrected weekday if available (for arrival data with timezone crossing)
+        # Otherwise use original API weekday (for departure data or when no correction applied)
+        weekdays = str(flight.get('extracted_weekday', flight.get('weekday', '')))
         
         # Determine codeshare information
         codeshare_data = flight.get('codeshared')
