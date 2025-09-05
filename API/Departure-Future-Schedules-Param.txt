@@ -10,7 +10,7 @@
 api_key=
 iataCode=PROMPT_USER
 type=departure
-date=2025-09-19
+date=2025-09-20
 date_range=7
 
 # API Key (Required)
@@ -155,7 +155,7 @@ flight_num=
 [jfk_arrivals_today]
 iataCode=PROMPT_USER
 type=arrival
-date=2025-09-19
+date=2025-09-20
 airline_iata=
 flight_num=
 
@@ -164,7 +164,7 @@ flight_num=
 iataCode=PROMPT_USER
 type=departure
 airline_iata=LH
-date=2025-09-19
+date=2025-09-20
 
 # ========================================
 # NOTES FOR AVIATION EDGE API

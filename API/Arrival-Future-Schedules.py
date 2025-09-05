@@ -102,8 +102,7 @@ class ArrivalFutureSchedules:
             # This handles overnight flights where departure is late (e.g., 21:25) and 
             # arrival is early next day (e.g., 05:10)
             if dep_minutes > arr_minutes:
-                # Overnight flight detected - API weekday appears to be arrival-based
-                # Subtract 1 to get the correct departure weekday reference
+                # Overnight flight detected - subtract 1 from weekday for correct departure reference
                 corrected_weekday = api_weekday - 1
                 # Handle week rollover (Monday=1 -> Sunday=7)
                 if corrected_weekday < 1:
