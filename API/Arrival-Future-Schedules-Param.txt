@@ -1,0 +1,136 @@
+# Arrival-Future-Schedules-Param
+# Parameter configuration file for Aviation Edge Future Flights API
+# API Endpoint: https://aviation-edge.com/v2/public/flightsFuture
+# FOCUS: ARRIVAL FLIGHTS ONLY
+
+# ========================================
+# AVIATION EDGE API PARAMETERS - ARRIVALS
+# ========================================
+
+# Required Parameters
+api_key=
+iataCode=MNL,HND
+type=arrival
+date=2025-09-14
+
+# API Key (Required)
+# Get your API key from Aviation Edge dashboard
+# SECURITY: API key is stored in .env file for security
+# Your API key: 58b694-b40ef9 (configured in .env file)
+# Example: api_key=YOUR_API_KEY_HERE
+
+# Airport IATA Code (Required)
+# 3-letter airport code - this is the ARRIVAL airport
+# Examples: BER=Berlin, JFK=New York JFK, LAX=Los Angeles, LHR=London Heathrow
+# For POM arrivals: iataCode=POM
+# For MNL arrivals: iataCode=MNL
+
+# Type (Fixed for this script)
+# ALWAYS "arrival" for this script - finds flights arriving at the specified airport
+# type=arrival
+
+# Date (Required)
+# Future date in YYYY-MM-DD format
+# CRITICAL: Must be a future date, minimum 8 days from current date
+# Data is ONLY available 8+ days ahead from current date
+# Example: date=2025-09-13 (if today is 2025-09-05, minimum date is 2025-09-13)
+# NEVER use dates within 8 days of current date
+
+# Optional Filter Parameters
+airline_iata=
+airline_icao=
+flight_num=
+
+# Airline IATA Code (Optional)
+# 2-letter airline code for filtering specific airline arrivals
+# Examples: LH=Lufthansa, AA=American Airlines, BA=British Airways, PR=Philippine Airlines
+# airline_iata=PR
+
+# Airline ICAO Code (Optional)  
+# 3-letter airline code for filtering specific airline arrivals
+# Examples: DLH=Lufthansa, AAL=American Airlines, BAW=British Airways, PAL=Philippine Airlines
+# airline_icao=PAL
+
+# Flight Number (Optional)
+# Specific flight number to filter
+# Examples: flight_num=215, flight_num=216
+# flight_num=216
+
+# ========================================
+# ARRIVAL-SPECIFIC USAGE NOTES
+# ========================================
+
+# ARRIVAL QUERIES find flights that ARRIVE at the specified airport
+# - iataCode=POM finds flights arriving IN Port Moresby (from anywhere)
+# - iataCode=MNL finds flights arriving IN Manila (from anywhere)
+
+# COMMON ARRIVAL SCENARIOS:
+# 1. Find return flights to POM:
+#    iataCode=POM, type=arrival, airline_iata=PR
+# 
+# 2. Find all arrivals at Manila:
+#    iataCode=MNL, type=arrival
+#
+# 3. Find specific flight arrivals:
+#    iataCode=MNL, type=arrival, flight_num=216
+
+# ========================================
+# SYSTEM INTEGRATION
+# ========================================
+
+# DATABASE: Both Departure and Arrival scripts update same database
+# QUERY_TYPE: Automatically set to "arrival" for tracking
+# WEEKDAYS: Consolidated across multiple API calls
+# UPPERCASE: All data stored in uppercase format
+
+# COMPLEMENTARY SCRIPTS:
+# - Departure-Future-Schedules.py: Finds flights departing FROM airports
+# - Arrival-Future-Schedules.py: Finds flights arriving AT airports
+# - Both update same DB with proper query_type differentiation
+
+# ========================================
+# EXAMPLE CONFIGURATIONS
+# ========================================
+
+# Configuration 1: Find all flights arriving at POM
+# iataCode=POM
+# type=arrival
+# date=2025-09-19
+
+# Configuration 2: Find Philippine Airlines arrivals at MNL
+# iataCode=MNL
+# type=arrival
+# airline_iata=PR
+# date=2025-09-19
+
+# Configuration 3: Find specific PR216 arrivals
+# iataCode=MNL
+# type=arrival
+# flight_num=216
+# date=2025-09-19
+
+# ========================================
+# DATE VALIDATION
+# ========================================
+
+# Current date: 2025-09-05
+# Minimum valid date: 2025-09-13 (8 days ahead)
+# Recommended test dates: 2025-09-14 to 2025-09-20
+
+# IMPORTANT: Future Schedules API requires minimum 8-day advance notice
+# This is a permanent API limitation, not a script restriction
+
+# ========================================
+# RATE LIMITING & BEST PRACTICES
+# ========================================
+
+# Rate Limit: 10 requests per second maximum
+# Retry Logic: 3 attempts with exponential backoff
+# Timeout: 30 seconds per request
+# Database: Automatic weekday consolidation and duplicate prevention
+
+# RECOMMENDED WORKFLOW:
+# 1. Test single airport/date first
+# 2. Verify database storage and query_type
+# 3. Scale up to multiple airports/dates
+# 4. Use both departure and arrival scripts for complete coverage
